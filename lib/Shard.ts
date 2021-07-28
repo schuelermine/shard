@@ -113,10 +113,21 @@ export class Shard
 		} else
 		{
 			const count = typeof options === "object" && options !== null && typeof options.count === "number" ? options.count : increment();
+			let timestamp: number;
+			if (typeof options?.timestamp === "object")
+			{
+				timestamp = options.timestamp.getTime();
+			} else if (typeof options?.timestamp === "number")
+			{
+				timestamp = options.timestamp
+			} else
+			{
+				timestamp = Date.now()
+			}
 			this
 				._count(BigInt(count))
 				._service(BigInt(options?.service ?? 0))
-				._timestamp(BigInt(options?.timestamp ?? Date.now()));
+				._timestamp(BigInt(timestamp));
 		}
 	}
 	
